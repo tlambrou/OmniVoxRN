@@ -1,6 +1,6 @@
 import React from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native';
 import axios from 'axios'
+import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 
 export class HomeScreen extends React.Component {
 
@@ -14,7 +14,7 @@ export class HomeScreen extends React.Component {
     }
   }
   static navigationOptions = {
-    title: 'Welcome',
+    title: 'Back',
   };
 
   componentWillMount() {
@@ -24,13 +24,7 @@ export class HomeScreen extends React.Component {
       }
     })
     .then((response) => {
-      console.log(response.data)
-      this.setState({
-        greeting: response.data.greeting,
-        instruction: response.data.instruction,
-        slogan: response.data.slogan,
-        placeholder: response.data.placeholder
-      }) 
+      this.setState(response.data)
     })
     .catch((err) => {
       console.log(error)
@@ -39,16 +33,21 @@ export class HomeScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation
-    console.log(this.state)
+    const vox = { vox: this.state.text }
     return (
       <View style={styles.container}>
       <Text>{this.state.greeting}</Text>
       <Text>{this.state.slogan}</Text>
       <Text>{this.state.instruction}</Text>
+      <TextInput
+        style={{height: 40, width: '90%', borderColor: 'gray', borderWidth: 1}}
+        onChangeText={(text) => this.setState({text})}
+        value={this.state.text}
+      />
       <Button
       title="Go to Vox"
       onPress={() =>
-        navigate('Profile', { name: 'Jane' })
+        navigate('Vox', vox)
       }
       />
       </View>
